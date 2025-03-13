@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS repositories;
+DROP TABLE IF EXISTS commits;
+DROP TABLE IF EXISTS tasks;

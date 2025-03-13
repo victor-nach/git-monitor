@@ -1,0 +1,980 @@
+{
+	"info": {
+		"_postman_id": "5d10742b-d8f3-4e0e-ab09-fe5a8cae6767",
+		"name": "GIt Monitor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6414812"
+	},
+	"item": [
+		{
+			"name": "tasks",
+			"item": [
+				{
+					"name": "List tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tasks",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tasks/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tasks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "12345"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "repo",
+			"item": [
+				{
+					"name": "Add Repository",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/repos/:owner/:repo?since=2025-03-16T00:00:00Z",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"repos",
+								":owner",
+								":repo"
+							],
+							"query": [
+								{
+									"key": "since",
+									"value": "2025-03-16T00:00:00Z"
+								}
+							],
+							"variable": [
+								{
+									"key": "owner",
+									"value": "chromium"
+								},
+								{
+									"key": "repo",
+									"value": "chromium"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Err - 404",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo"
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "12345"
+										},
+										{
+											"key": "repo",
+											"value": "12345"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 00:10:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "166"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"error_code\": \"RepositoryNotFound\",\n    \"message\": \"The repository info provided doesn't exist. Please check the owner and repository name and try again.\"\n}"
+						},
+						{
+							"name": "Err - conflict",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo"
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "victor-nach"
+										},
+										{
+											"key": "repo",
+											"value": "postr"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 01:07:21 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "127"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"error_code\": \"DuplicateRepository\",\n    \"message\": \"duplicate repository name provided, repository already exists\"\n}"
+						},
+						{
+							"name": "Err - 400 Invalid date format",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo?since=2024-1",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "2024-1"
+										}
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "chromium"
+										},
+										{
+											"key": "repo",
+											"value": "chromium"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 17 Mar 2025 00:25:23 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "107"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"error_code\": \"InvalidTimeFormat\",\n    \"message\": \"Invalid time format provided for key: since\"\n}"
+						},
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo?since=2025-03-15T00:00:00Z",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "2025-03-15T00:00:00Z"
+										}
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "chromium"
+										},
+										{
+											"key": "repo",
+											"value": "chromium"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 17 Mar 2025 00:32:40 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "751"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Repository added successfully\",\n    \"data\": {\n        \"task_id\": \"task-1787ba7568a042bd85c41d8fe5538fca\",\n        \"repository\": {\n            \"id\": \"repo-3a7077112f914329ad807ba31641c7b2\",\n            \"repo_id\": 120360765,\n            \"name\": \"chromium\",\n            \"owner\": \"chromium\",\n            \"description\": \"The official GitHub mirror of the Chromium source\",\n            \"url\": \"https://github.com/chromium/chromium\",\n            \"language\": \"C++\",\n            \"forks_count\": 7416,\n            \"stars_count\": 20141,\n            \"open_issues\": 119,\n            \"watchers_count\": 20141,\n            \"is_synced_to_start_time\": false,\n            \"is_active\": true,\n            \"commit_tracking_start_time\": \"2025-03-15T00:00:00Z\",\n            \"last_fetched_at\": null,\n            \"last_fetched_commit_time\": null,\n            \"repo_created_at\": \"2018-02-05T20:55:32Z\",\n            \"repo_updated_at\": \"2025-03-17T00:28:47Z\",\n            \"created_at\": \"2025-03-17T01:32:40.6593308+01:00\",\n            \"updated_at\": null\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "List All Tracked Repos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/repos",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"repos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 00:21:12 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1200"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Tracked repositories listed successfully\",\n    \"data\": [\n        {\n            \"id\": \"repo-0d00f38575124b9a9df96f7e0283c084\",\n            \"repo_id\": 939059169,\n            \"name\": \"todo\",\n            \"owner\": \"victor-nach\",\n            \"description\": \"microservice todo app with grpc communication\",\n            \"url\": \"https://github.com/victor-nach/todo\",\n            \"language\": \"Go\",\n            \"forks_count\": 0,\n            \"stars_count\": 0,\n            \"open_issues\": 0,\n            \"watchers_count\": 0,\n            \"is_synced_to_start_time\": false,\n            \"is_active\": true,\n            \"commit_tracking_start_time\": null,\n            \"last_fetched_at\": null,\n            \"repo_created_at\": \"2025-02-25T23:31:06Z\",\n            \"repo_updated_at\": \"2025-02-28T07:17:12Z\",\n            \"created_at\": \"2025-03-13T13:47:05.2628531+01:00\",\n            \"updated_at\": \"2025-03-13T13:47:05.2628531+01:00\"\n        },\n        {\n            \"id\": \"repo-3848f5fcbd60421c8a87e3265ad98cf6\",\n            \"repo_id\": 930258298,\n            \"name\": \"postr\",\n            \"owner\": \"victor-nach\",\n            \"description\": \"Postr\",\n            \"url\": \"https://github.com/victor-nach/postr\",\n            \"language\": \"Go\",\n            \"forks_count\": 0,\n            \"stars_count\": 0,\n            \"open_issues\": 0,\n            \"watchers_count\": 0,\n            \"is_synced_to_start_time\": false,\n            \"is_active\": true,\n            \"commit_tracking_start_time\": null,\n            \"last_fetched_at\": null,\n            \"repo_created_at\": \"2025-02-10T10:42:58Z\",\n            \"repo_updated_at\": \"2025-02-17T07:10:58Z\",\n            \"created_at\": \"2025-03-16T01:11:46.0487426+01:00\",\n            \"updated_at\": \"2025-03-16T01:11:46.0487426+01:00\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Repo active status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/repos/:owner/:repo/status?status=active",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"repos",
+								":owner",
+								":repo",
+								"status"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "active"
+								}
+							],
+							"variable": [
+								{
+									"key": "owner",
+									"value": "victor-nach"
+								},
+								{
+									"key": "repo",
+									"value": "todo"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Err - 404",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo/status?status=active",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo",
+										"status"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "active"
+										}
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "victor-nach"
+										},
+										{
+											"key": "repo",
+											"value": "todo"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 16 Mar 2025 00:55:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "166"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"error_code\": \"TrackedRepositoryNotFound\",\n    \"message\": \"The repository you're looking for isn't in your tracked list. Please add it first to continue.\"\n}"
+						},
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo/status?status=active",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo",
+										"status"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "active"
+										}
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "victor-nach"
+										},
+										{
+											"key": "repo",
+											"value": "todo"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 17 Mar 2025 00:11:18 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Repository status updated successfully\"\n}"
+						},
+						{
+							"name": "Err - 400",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo/status?status=activee",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo",
+										"status"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "activee"
+										}
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "victor-nach"
+										},
+										{
+											"key": "repo",
+											"value": "todo"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 17 Mar 2025 00:11:32 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "125"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"error_code\": \"InputValidation\",\n    \"message\": \"Input validation failed: a valid status query param is required\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Reset Repo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/repos/:owner/:repo/reset?since=2025-03-16T00:00:00Z",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"repos",
+								":owner",
+								":repo",
+								"reset"
+							],
+							"query": [
+								{
+									"key": "since",
+									"value": "2025-03-16T00:00:00Z",
+									"description": "Optional start time\n"
+								}
+							],
+							"variable": [
+								{
+									"key": "owner",
+									"value": "chromium"
+								},
+								{
+									"key": "repo",
+									"value": "chromium"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo/reset?since=2025-03-16T00:00:00Z",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo",
+										"reset"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "2025-03-16T00:00:00Z",
+											"description": "Optional start time\n"
+										}
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "chromium"
+										},
+										{
+											"key": "repo",
+											"value": "chromium"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 17 Mar 2025 01:15:46 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "121"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Repository reset successfully\",\n    \"data\": {\n        \"task_id\": \"task-47c1ff30cfdc400facd780b4c9d6a267\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Trigger fetch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/repos/:owner/:repo/trigger",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"repos",
+								":owner",
+								":repo",
+								"trigger"
+							],
+							"variable": [
+								{
+									"key": "owner",
+									"value": "victor-nach"
+								},
+								{
+									"key": "repo",
+									"value": "todo"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo/trigger",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo",
+										"trigger"
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "victor-nach"
+										},
+										{
+											"key": "repo",
+											"value": "todo"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 17 Mar 2025 00:11:54 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "119"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Task triggered successfully\",\n    \"data\": {\n        \"task_id\": \"task-b8461f8f245a4fe6b5f8c8e9a88ea804\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "commits",
+			"item": [
+				{
+					"name": "List repo commits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/repos/:owner/:repo/commits",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"repos",
+								":owner",
+								":repo",
+								"commits"
+							],
+							"variable": [
+								{
+									"key": "owner",
+									"value": "chromium"
+								},
+								{
+									"key": "repo",
+									"value": "chromium"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo/commits",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo",
+										"commits"
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "chromium"
+										},
+										{
+											"key": "repo",
+											"value": "chromium"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 17 Mar 2025 00:39:44 GMT"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Commits listed successfully\",\n    \"pagination\": {\n        \"next_cursor\": \"2025-03-16T23:16:09Z\"\n    },\n    \"data\": [\n        {\n            \"id\": \"commit-9c73f925da0e4161ad5319c61d67a639\",\n            \"sha\": \"5e501d83ae51def3d80334ceae21d3d0aee68972\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Roll clank/internal/apps from 091e28d14cb5 to 2c85960fdb97 (1 revision)\\n\\nhttps://chrome-internal.googlesource.com/clank/internal/apps.git/+log/091e28d14cb5..2c85960fdb97\\n\\nIf this roll has caused a breakage, revert this CL and stop the roller\\nusing the controls here:\\nhttps://skia-autoroll.corp.goog/r/clank-apps-chromium-autoroll\\nPlease CC chrome-brapp-engprod@google.com on the revert to ensure that a human\\nis aware of the problem.\\n\\nTo report a problem with the AutoRoller itself, please file a bug:\\nhttps://issues.skia.org/issues/new?component=1389291&template=1850622\\n\\nDocumentation for the AutoRoller is here:\\nhttps://skia.googlesource.com/buildbot/+doc/main/autoroll/README.md\\n\\nBug: None\\nTbr: \\nNo-Try: true\\nChange-Id: I0745dfc8fa297c911458d9aa623da411594b6fc2\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6359311\\nBot-Commit: chromium-internal-autoroll <chromium-internal-autoroll@skia-corp.google.com.iam.gserviceaccount.com>\\nCommit-Queue: chromium-internal-autoroll <chromium-internal-autoroll@skia-corp.google.com.iam.gserviceaccount.com>\\nCr-Commit-Position: refs/heads/main@{#1433303}\",\n            \"author\": \"chromium-internal-autoroll\",\n            \"author_email\": \"chromium-internal-autoroll@skia-corp.google.com.iam.gserviceaccount.com\",\n            \"date\": \"2025-03-17T00:20:14Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/5e501d83ae51def3d80334ceae21d3d0aee68972\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-fe08d7f385444d4a9dd4d379f69c875f\",\n            \"sha\": \"5ef8e11883ee08cd3c5e03d881d64966b8a76990\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Roll Chrome Android ARM64 PGO Profile\\n\\nRoll Chrome Android ARM64 PGO profile from chrome-android64-main-1742160040-aeb22522e52f014ab8bc21829c9fffa974734f4e-2ab2e8a0fefc77148ebf6592a4fedf5133d95ee5.profdata to chrome-android64-main-1742164324-f4346b66b05dc703dd6a09ae6132acc075578510-13a93e45a432605d44414bd41e7e7907713bbd4e.profdata\\n\\nIf this roll has caused a breakage, revert this CL and stop the roller\\nusing the controls here:\\nhttps://autoroll.skia.org/r/pgo-android-arm64-chromium\\nPlease CC chrome-brapp-engprod@google.com,pgo-profile-sheriffs@google.com on the revert to ensure that a human\\nis aware of the problem.\\n\\nTo file a bug in Chromium main branch: https://bugs.chromium.org/p/chromium/issues/entry\\n\\nTo report a problem with the AutoRoller itself, please file a bug:\\nhttps://issues.skia.org/issues/new?component=1389291&template=1850622\\n\\nDocumentation for the AutoRoller is here:\\nhttps://skia.googlesource.com/buildbot/+doc/main/autoroll/README.md\\n\\nTbr: pgo-profile-sheriffs@google.com\\nMerge-Approval-Bypass: Chrome autoroller\\nChange-Id: I66f21aa6125a3dc30da395ae3fd140abb753a385\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6359995\\nCommit-Queue: chromium-autoroll <chromium-autoroll@skia-public.iam.gserviceaccount.com>\\nBot-Commit: chromium-autoroll <chromium-autoroll@skia-public.iam.gserviceaccount.com>\\nCr-Commit-Position: refs/heads/main@{#1433302}\",\n            \"author\": \"chromium-autoroll\",\n            \"author_email\": \"chromium-autoroll@skia-public.iam.gserviceaccount.com\",\n            \"date\": \"2025-03-17T00:18:44Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/5ef8e11883ee08cd3c5e03d881d64966b8a76990\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-293bb69cf2c4464ea063070c91993822\",\n            \"sha\": \"54f9f7b4503734b0814312643d419fdb7c8b2f1b\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Roll clank/internal/apps from 1fa56ee4d61f to 091e28d14cb5 (1 revision)\\n\\nhttps://chrome-internal.googlesource.com/clank/internal/apps.git/+log/1fa56ee4d61f..091e28d14cb5\\n\\nIf this roll has caused a breakage, revert this CL and stop the roller\\nusing the controls here:\\nhttps://skia-autoroll.corp.goog/r/clank-apps-chromium-autoroll\\nPlease CC chrome-brapp-engprod@google.com on the revert to ensure that a human\\nis aware of the problem.\\n\\nTo report a problem with the AutoRoller itself, please file a bug:\\nhttps://issues.skia.org/issues/new?component=1389291&template=1850622\\n\\nDocumentation for the AutoRoller is here:\\nhttps://skia.googlesource.com/buildbot/+doc/main/autoroll/README.md\\n\\nBug: None\\nTbr: \\nNo-Try: true\\nChange-Id: Iaf3ad444bb3d3459b3936c8d711cc9d9cb6c4be1\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6358861\\nCommit-Queue: chromium-internal-autoroll <chromium-internal-autoroll@skia-corp.google.com.iam.gserviceaccount.com>\\nBot-Commit: chromium-internal-autoroll <chromium-internal-autoroll@skia-corp.google.com.iam.gserviceaccount.com>\\nCr-Commit-Position: refs/heads/main@{#1433301}\",\n            \"author\": \"chromium-internal-autoroll\",\n            \"author_email\": \"chromium-internal-autoroll@skia-corp.google.com.iam.gserviceaccount.com\",\n            \"date\": \"2025-03-17T00:04:05Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/54f9f7b4503734b0814312643d419fdb7c8b2f1b\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-239422e934864db49a0fddbbf5bf936b\",\n            \"sha\": \"40c0a6f8c1e1b33004d0e8d55382c634fc06083d\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Deleting dead code qunit\\n\\nBased on codesearch it looks like this is unused.\\n\\n#deadcoderemovathon\\n\\nChange-Id: I950799d98111ee1c8202ed5159a75824ab8d88bb\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6331679\\nCommit-Queue: Jordan Brown <rop@google.com>\\nReviewed-by: Joey Scarr <jsca@google.com>\\nReviewed-by: Jamie Walch <jamiewalch@chromium.org>\\nCr-Commit-Position: refs/heads/main@{#1433300}\",\n            \"author\": \"Jordan Brown\",\n            \"author_email\": \"rop@google.com\",\n            \"date\": \"2025-03-17T00:03:14Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/40c0a6f8c1e1b33004d0e8d55382c634fc06083d\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-945f1d226aa24b6ca4291960a092d174\",\n            \"sha\": \"17de40190082e4883f954a4b234ffbf669ad4238\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Revert \\\"Add callback and logging for PdfSearchify feature promo.\\\"\\n\\nThis reverts commit 36ed96ad337392c7193749adc14ad4c60325de43.\\n\\nReason for revert: This change was done to collect logs on Canary. Not needed anymore.\\n\\nOriginal change's description:\\n> Add callback and logging for PdfSearchify feature promo.\\n>\\n> PDF Searchify promo is not shown on Mac releases. To investigate the\\n> issue, add logging feature promo trigger and result.\\n>\\n> Bug: 401757925\\n> Change-Id: I367633e63b4fbc42a01d69178257f715e9de1380\\n> Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6329392\\n> Reviewed-by: Dana Fried <dfried@chromium.org>\\n> Commit-Queue: Ramin Halavati <rhalavati@chromium.org>\\n> Cr-Commit-Position: refs/heads/main@{#1430244}\\n\\nBug: 401757925\\nChange-Id: Id898fbf1baa91006278f5f163d1ed5873a6ca562\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6354908\\nReviewed-by: Dana Fried <dfried@chromium.org>\\nCommit-Queue: Dana Fried <dfried@chromium.org>\\nBot-Commit: Rubber Stamper <rubber-stamper@appspot.gserviceaccount.com>\\nAuto-Submit: Ramin Halavati <rhalavati@chromium.org>\\nCr-Commit-Position: refs/heads/main@{#1433299}\",\n            \"author\": \"Ramin Halavati\",\n            \"author_email\": \"rhalavati@chromium.org\",\n            \"date\": \"2025-03-17T00:02:53Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/17de40190082e4883f954a4b234ffbf669ad4238\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-346cfa131cea4a8aa2cdb3f8ca880109\",\n            \"sha\": \"2e44a9a92e0fba929f4d943547b54e6cea418a03\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Refactor: Consolidate MockConnect definition in URLLoaderMockSocketTest\\n\\nThis change refactors the URLLoaderMockSocketTest by introducing a\\nconstant kAsyncMockConnect for the common async connect mock. This\\nreduces redundancy and improves readability.\\n\\nBug: 391950057\\nChange-Id: I6257125d284ecb30fd4eb83ff1868e1134ee0a8d\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6356470\\nReviewed-by: Kenichi Ishibashi <bashi@chromium.org>\\nCommit-Queue: Tsuyoshi Horo <horo@chromium.org>\\nCr-Commit-Position: refs/heads/main@{#1433298}\",\n            \"author\": \"Tsuyoshi Horo\",\n            \"author_email\": \"horo@chromium.org\",\n            \"date\": \"2025-03-16T23:46:42Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/2e44a9a92e0fba929f4d943547b54e6cea418a03\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-90796d8e714d4501afec4f7c4f1d9744\",\n            \"sha\": \"0e0c8ea63f57250f569ce58bda9c1ec42fca717d\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Import wpt@78271cb729bc549c41ce3fd4b9361efe763626c1\\n\\nhttps://github.com/web-platform-tests/wpt/compare/a891f29a3...78271cb72\\n\\nUsing wpt-import in Chromium e985388f04120f2174eeff673d8b518e3b14d212.\\n\\nNote to gardeners: This CL imports external tests and adds expectations\\nfor those tests; if this CL is large and causes a few new failures,\\nplease fix the failures by adding new lines to TestExpectations rather\\nthan reverting. See:\\nhttps://chromium.googlesource.com/chromium/src/+/main/docs/testing/web_platform_tests.md\\n\\nNOAUTOREVERT=true\\nR=rubber-stamper@appspot.gserviceaccount.com\\n\\nNo-Export: true\\nCq-Include-Trybots: luci.chromium.try:linux-blink-rel\\nChange-Id: I00d8a5b1c7b6b60ad4eeffba6edb7af204eb3fdc\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6359062\\nAuto-Submit: WPT Autoroller <wpt-autoroller@chops-service-accounts.iam.gserviceaccount.com>\\nBot-Commit: Rubber Stamper <rubber-stamper@appspot.gserviceaccount.com>\\nCommit-Queue: Rubber Stamper <rubber-stamper@appspot.gserviceaccount.com>\\nCr-Commit-Position: refs/heads/main@{#1433297}\",\n            \"author\": \"Chromium WPT Sync\",\n            \"author_email\": \"wpt-autoroller@chops-service-accounts.iam.gserviceaccount.com\",\n            \"date\": \"2025-03-16T23:37:27Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/0e0c8ea63f57250f569ce58bda9c1ec42fca717d\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-4a79bd63ea734f28b21c5042d59296db\",\n            \"sha\": \"5ae76ca1a3fa0f0cb828c29ceb5c032510e0a373\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Roll Chrome Android ARM64 PGO Profile\\n\\nRoll Chrome Android ARM64 PGO profile from chrome-android64-main-1742157854-05522327f22f47b865e173f33b8e16eb43725ab8-d85a6ace000a87c6444eebfa77a3e4887cb4f500.profdata to chrome-android64-main-1742160040-aeb22522e52f014ab8bc21829c9fffa974734f4e-2ab2e8a0fefc77148ebf6592a4fedf5133d95ee5.profdata\\n\\nIf this roll has caused a breakage, revert this CL and stop the roller\\nusing the controls here:\\nhttps://autoroll.skia.org/r/pgo-android-arm64-chromium\\nPlease CC chrome-brapp-engprod@google.com,pgo-profile-sheriffs@google.com on the revert to ensure that a human\\nis aware of the problem.\\n\\nTo file a bug in Chromium main branch: https://bugs.chromium.org/p/chromium/issues/entry\\n\\nTo report a problem with the AutoRoller itself, please file a bug:\\nhttps://issues.skia.org/issues/new?component=1389291&template=1850622\\n\\nDocumentation for the AutoRoller is here:\\nhttps://skia.googlesource.com/buildbot/+doc/main/autoroll/README.md\\n\\nTbr: pgo-profile-sheriffs@google.com\\nMerge-Approval-Bypass: Chrome autoroller\\nChange-Id: Ie71c562fb2ae77a7d2b960513dd82575210b7131\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6359941\\nCommit-Queue: chromium-autoroll <chromium-autoroll@skia-public.iam.gserviceaccount.com>\\nBot-Commit: chromium-autoroll <chromium-autoroll@skia-public.iam.gserviceaccount.com>\\nCr-Commit-Position: refs/heads/main@{#1433296}\",\n            \"author\": \"chromium-autoroll\",\n            \"author_email\": \"chromium-autoroll@skia-public.iam.gserviceaccount.com\",\n            \"date\": \"2025-03-16T23:32:09Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/5ae76ca1a3fa0f0cb828c29ceb5c032510e0a373\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-743b82bb3075436fbfaf68a0399fced5\",\n            \"sha\": \"964148b54bb9f3bae81639ed3f687df5d6309928\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Add PRESUBMIT CheckNoNewJs exception for c/b/r/enterprise/\\n\\nThe MandatoryExtensionsForIncognitoNavigation policy will be\\nextended to support Linux, Mac and Windows. This change unblocks\\nhttps://crrev.com/c/5054999 allowing existing code to be moved.\\n\\nBug: 403113291\\nChange-Id: I1671537fe2f113a23a45878967f884a6517dbbef\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6350893\\nReviewed-by: Demetrios Papadopoulos <dpapad@chromium.org>\\nReviewed-by: Rebekah Potter <rbpotter@chromium.org>\\nCommit-Queue: Dean Albury <deanalbury@google.com>\\nCr-Commit-Position: refs/heads/main@{#1433295}\",\n            \"author\": \"Dean Albury\",\n            \"author_email\": \"deanalbury@google.com\",\n            \"date\": \"2025-03-16T23:28:53Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/964148b54bb9f3bae81639ed3f687df5d6309928\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        },\n        {\n            \"id\": \"commit-177d64bff908476389e0444e67be7fb0\",\n            \"sha\": \"0c0080d3fd8d8676249995b62e13b9ec438fb933\",\n            \"repository_id\": \"repo-3628de94f055443a99150a1dacd254f3\",\n            \"repo_name\": \"chromium\",\n            \"repo_owner\": \"chromium\",\n            \"message\": \"Reland \\\"scanner: Use internal strings and icon in Settings\\\"\\n\\nThis is a reland of commit 8a60c37fa9df44d79028f3b774903015b73c2fc1\\n\\nReason: The original change was reverted for unrelated\\nreasons.\\n\\nOriginal change's description:\\n> scanner: Use internal strings and icon in Settings\\n>\\n> These strings and icons will be moved out of internal before launch.\\n>\\n> Test: local compile and see http://screen/362M8kG5wQadWeT\\n> Bug: b:391230943\\n> Change-Id: I6a6a21005e0955256ba51d1359d55016563bfbd3\\n> Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6332770\\n> Reviewed-by: Wes Okuhara <wesokuhara@google.com>\\n> Commit-Queue: Michael Cui <mlcui@google.com>\\n> Cr-Commit-Position: refs/heads/main@{#1432550}\\n\\nBug: b:391230943\\nChange-Id: I6f1d4bd3b578696305df122382973d9eb8fbce28\\nReviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6357129\\nReviewed-by: Nikki Moteva <moteva@google.com>\\nReviewed-by: Wes Okuhara <wesokuhara@google.com>\\nCommit-Queue: Michael Cui <mlcui@google.com>\\nCr-Commit-Position: refs/heads/main@{#1433294}\",\n            \"author\": \"Michael Cui\",\n            \"author_email\": \"mlcui@google.com\",\n            \"date\": \"2025-03-16T23:16:09Z\",\n            \"url\": \"https://github.com/chromium/chromium/commit/0c0080d3fd8d8676249995b62e13b9ec438fb933\",\n            \"created_at\": \"2025-03-17T01:35:46.0368056+01:00\",\n            \"updated_at\": \"2025-03-17T01:35:46.1126673+01:00\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get top commit authors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/repos/:owner/:repo/top-authors",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"repos",
+								":owner",
+								":repo",
+								"top-authors"
+							],
+							"variable": [
+								{
+									"key": "owner",
+									"value": "victor-nach"
+								},
+								{
+									"key": "repo",
+									"value": "todo"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/repos/:owner/:repo/top-authors",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"repos",
+										":owner",
+										":repo",
+										"top-authors"
+									],
+									"variable": [
+										{
+											"key": "owner",
+											"value": "chromium"
+										},
+										{
+											"key": "repo",
+											"value": "chromium"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 17 Mar 2025 00:54:11 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "563"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Top commit authors retrieved successfully\",\n    \"data\": [\n        {\n            \"author\": \"chromium-autoroll\",\n            \"commits\": 75\n        },\n        {\n            \"author\": \"chromium-internal-autoroll\",\n            \"commits\": 22\n        },\n        {\n            \"author\": \"PKI Metadata Updates Bot\",\n            \"commits\": 2\n        },\n        {\n            \"author\": \"Michelle Chen\",\n            \"commits\": 2\n        },\n        {\n            \"author\": \"Internal Frameworks Autoroller\",\n            \"commits\": 2\n        },\n        {\n            \"author\": \"Chrome Release Bot (LUCI)\",\n            \"commits\": 2\n        },\n        {\n            \"author\": \"luci-bisection@appspot.gserviceaccount.com\",\n            \"commits\": 1\n        },\n        {\n            \"author\": \"Victor Tan\",\n            \"commits\": 1\n        },\n        {\n            \"author\": \"Tsuyoshi Horo\",\n            \"commits\": 1\n        },\n        {\n            \"author\": \"Thomas Lukaszewicz\",\n            \"commits\": 1\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Third-party API's",
+			"item": [
+				{
+					"name": "Github API",
+					"item": [
+						{
+							"name": "GIthub API",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Welcome",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080",
+							"host": [
+								"localhost"
+							],
+							"port": "8080"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 15 Mar 2025 23:35:01 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "26"
+						}
+					],
+					"cookie": [],
+					"body": "Welcome to Git Monitor API"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "localhost:5980/api/v1",
+			"type": "string"
+		}
+	]
+}

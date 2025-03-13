@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: git-monitor-app
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ENV=development
+      - RABBITMQ_URL=amqp://rabbitmq:5672/
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: git-monitor-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
