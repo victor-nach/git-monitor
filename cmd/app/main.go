@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"context"
 	"database/sql"
@@ -9,11 +8,12 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/victor-nach/git-monitor/internal/config"
+	"github.com/victor-nach/git-monitor/config"
 	"github.com/victor-nach/git-monitor/internal/db"
 	"github.com/victor-nach/git-monitor/internal/db/store"
 	"github.com/victor-nach/git-monitor/internal/domain/services/commit"
-	"github.com/victor-nach/git-monitor/internal/domain/services/github"
+	"github.com/victor-nach/git-monitor/pkg/github"
+
 	"github.com/victor-nach/git-monitor/internal/domain/services/repository"
 	"github.com/victor-nach/git-monitor/internal/domain/services/task"
 	"github.com/victor-nach/git-monitor/internal/http/handlers"
@@ -40,44 +40,41 @@ func main() {
 	gormDB, sqlDB := initDatabase(log, cfg)
 	defer sqlDB.Close()
 
-	eventBus := initMessageQueue(log, cfg)
-	defer eventBus.Close()
-
-	run(log, cfg, gormDB, eventBus)
+	run(log, cfg, gormDB)
 }
 
-
-func run(log *zap.Logger, cfg *config.Config, gormDB *gorm.DB, eventBus *eventbus.RabbitMQEventBus) {
+func run(log *zap.Logger, cfg *config.Config, gormDB *gorm.DB) {
 	db := store.New(gormDB)
 	repoStore := db.NewRepoStore()
 	commitStore := db.NewCommitStore()
 	taskStore := db.NewTaskStore()
 
-	gitClient := githubclient.New(cfg.GithubToken, log)
+	eventBus := eventbus.NewInMemoryEventBus(log, cfg.GetQueueBufferSize())
+	defer eventBus.Close()
+	gitClient := githubclient.New(cfg.GetGithubToken(), log)
 
-	githubSvc := github.New(log, gitClient, cfg.GithubBatchSize)
+	githubSvc := github.New(log, gitClient, cfg.GetGithubBatchSize())
 	tasksSvc := task.New(taskStore, repoStore, eventBus)
 	repoSvc := repository.New(repoStore, tasksSvc, githubSvc)
 	commitSvc := commit.New(commitStore)
 
 	ctx := context.Background()
-	schedulerSvc := scheduler.New(log, tasksSvc, cfg.ScheduleInterval)
+	schedulerSvc := scheduler.New(log, tasksSvc, cfg.GetScheduleInterval())
 	go schedulerSvc.Start(ctx)
 
-	fetcherWorker := fetcher.New(log, githubSvc, tasksSvc, eventBus, cfg.WorkerSize)
+	fetcherWorker := fetcher.New(log, githubSvc, tasksSvc, eventBus, cfg.GetWorkerSize())
 	if err := fetcherWorker.Subscribe(ctx); err != nil {
 		log.Fatal("failed to subscribe fetcher worker", zap.Error(err))
 	}
 
-	saverWorker := saver.New(log, commitSvc, repoSvc, eventBus, cfg.WorkerSize)
+	saverWorker := saver.New(log, commitSvc, repoSvc, eventBus, cfg.GetWorkerSize())
 	if err := saverWorker.Subscribe(ctx); err != nil {
 		log.Fatal("failed to subscribe saver worker", zap.Error(err))
 	}
 
 	handlers := handlers.New(log, repoSvc, commitSvc, tasksSvc)
-	server.Run(log, handlers, cfg)
+	server.Run(log, handlers, cfg.GetPort())
 }
-
 
 func InitLogger() *zap.Logger {
 	appEnv, ok := os.LookupEnv("APP_ENV")
@@ -106,7 +103,7 @@ func initDatabase(log *zap.Logger, cfg *config.Config) (*gorm.DB, *sql.DB) {
 	if err != nil {
 		log.Fatal("failed to get project root", zap.Error(err))
 	}
-	dbf := filepath.Join(projectRoot, "data", cfg.DBFileName)
+	dbf := filepath.Join(projectRoot, "data", cfg.GetDBFileName())
 	mf := filepath.Join(projectRoot, "migrations")
 	mf = filepath.ToSlash(mf)
 
@@ -118,15 +115,4 @@ func initDatabase(log *zap.Logger, cfg *config.Config) (*gorm.DB, *sql.DB) {
 		log.Fatal("failed to initialize database", zap.Error(err))
 	}
 	return gormDB, sqlDB
-}
-
-func initMessageQueue(log *zap.Logger, cfg *config.Config) *eventbus.RabbitMQEventBus {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	eventBus, err := eventbus.NewRabbitMQEventBus(ctx, cfg.RabbitMQURL, log)
-	if err != nil {
-		log.Fatal("failed to initialize message queue", zap.Error(err))
-	}
-	return eventBus
 }

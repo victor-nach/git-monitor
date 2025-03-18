@@ -13,7 +13,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
-	"github.com/victor-nach/git-monitor/internal/config"
+	"github.com/victor-nach/git-monitor/config"
 	"github.com/victor-nach/git-monitor/pkg/logger"
 	"github.com/victor-nach/git-monitor/pkg/migrator"
 	"github.com/victor-nach/git-monitor/pkg/utils"

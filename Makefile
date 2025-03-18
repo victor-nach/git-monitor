@@ -13,9 +13,17 @@ start:
 	@echo "Starting the application with Docker..."
 	docker-compose -f docker/docker-compose.yml up
 
-# Run the app locally with RabbitMQ
+# Run the app locally
 run:
-	@echo "Starting RabbitMQ with Docker..."
+	# @echo "Starting RabbitMQ with Dockr..."
+	# docker-compose -f docker/docker-compose.rabbitmq.yml up -d
+	# @sleep 5 # Wait for RabbitMQ to start
+	@echo "Running the application locally..."
+	go run ./cmd/app/main.go
+
+# Run the app locally with RabbitMQ
+run-rmq:
+	@echo "Starting RabbitMQ with Dockr..."
 	docker-compose -f docker/docker-compose.rabbitmq.yml up -d
 	@sleep 5 # Wait for RabbitMQ to start
 	@echo "Running the application locally..."

@@ -8,7 +8,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/victor-nach/git-monitor/internal/config"
+	"github.com/victor-nach/git-monitor/config"
 	"github.com/victor-nach/git-monitor/internal/db"
 	"github.com/victor-nach/git-monitor/pkg/logger"
 	"github.com/victor-nach/git-monitor/pkg/utils"
@@ -38,7 +38,7 @@ func main() {
 	}
 
 	// Set up the database file path
-	dbf := filepath.Join(projectRoot, "data", cfg.DBFileName)
+	dbf := filepath.Join(projectRoot, "data", cfg.GetDBFileName())
 	mf := filepath.Join(projectRoot, "migrations")
 	mf = filepath.ToSlash(mf)
 

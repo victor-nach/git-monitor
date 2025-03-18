@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS repositories (
     stars_count INTEGER NOT NULL,
     open_issues INTEGER NOT NULL,
     watchers_count INTEGER NOT NULL,
-    is_synced_to_start_time INTEGER NOT NULL DEFAULT 0, -- 0 = false, 1 = true
     is_active INTEGER NOT NULL DEFAULT 1, -- 0 = false, 1 = true
     commit_tracking_start_time TIMESTAMP,
     last_fetched_at TIMESTAMP,

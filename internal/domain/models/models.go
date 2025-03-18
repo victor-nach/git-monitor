@@ -39,7 +39,6 @@ type (
 		StarsCount              int        `json:"stars_count"`
 		OpenIssues              int        `json:"open_issues"`
 		WatchersCount           int        `json:"watchers_count"`
-		IsSyncedToStartTime     bool       `json:"is_synced_to_start_time"`
 		IsActive                bool       `json:"is_active"`
 		CommitTrackingStartTime time.Time  `json:"commit_tracking_start_time"`
 		LastFetchedAt           *time.Time `json:"last_fetched_at"`

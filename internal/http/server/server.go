@@ -10,15 +10,14 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/victor-nach/git-monitor/internal/config"
 	"github.com/victor-nach/git-monitor/internal/http/handlers"
 	"go.uber.org/zap"
 )
 
-func Run(log *zap.Logger, handler *handlers.Handler, cfg *config.Config) {
+func Run(log *zap.Logger, handler *handlers.Handler, port string) {
 	log = log.With(zap.String("service", "http-server"))
 
-	log.Info("Starting http server", zap.String("address", cfg.Port))
+	log.Info("Starting http server", zap.String("address", port))
 
 	router := gin.Default()
 
@@ -57,7 +56,7 @@ func Run(log *zap.Logger, handler *handlers.Handler, cfg *config.Config) {
 	}
 
 	srv := &http.Server{
-		Addr:    ":" + cfg.Port,
+		Addr:    ":" + port,
 		Handler: router,
 	}
 
