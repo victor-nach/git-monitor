@@ -59,3 +59,8 @@ docker-clean:
 	@echo "Cleaning up Docker resources..."
 	docker-compose -f docker/docker-compose.yml down -v --rmi all
 	docker-compose -f docker/docker-compose.rabbitmq.yml down -v --rmi all
+
+generate-mocks:
+	mockgen -destination=./internal/http/handlers/mocks/mock_repoSvc.go -package=mocks github.com/victor-nach/git-monitor/internal/http/handlers repoSvc
+	mockgen -destination=./internal/http/handlers/mocks/mock_taskSvc.go -package=mocks github.com/victor-nach/git-monitor/internal/http/handlers taskSvc
+	mockgen -destination=./internal/http/handlers/mocks/mock_commitSvc.go -package=mocks github.com/victor-nach/git-monitor/internal/http/handlers commitSvc

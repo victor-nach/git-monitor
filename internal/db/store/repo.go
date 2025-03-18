@@ -86,7 +86,6 @@ func (s *repoStore) Reset(ctx context.Context, RepoInfo models.RepoInfo, startTi
 		updates := map[string]interface{}{
 			"commit_tracking_start_time": startTime,
 			"last_fetched_at":            nil,
-			"is_synced_to_start_time":    false,
 			"updated_at":                 time.Now(),
 		}
 
