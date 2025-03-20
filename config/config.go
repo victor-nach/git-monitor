@@ -104,7 +104,6 @@ func getEnvAsDuration(key string, defaultValue time.Duration) time.Duration {
 	return value
 }
 
-// Getter methods (unchanged)
 func (c *Config) GetPort() string {
 	return c.port
 }

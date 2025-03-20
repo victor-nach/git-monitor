@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	// "strings"
 	"time"
 
 	"go.uber.org/zap"
@@ -76,12 +75,7 @@ func New(ctx context.Context, log *zap.Logger, dbPath, migrationsPath string, op
 		return nil, nil, fmt.Errorf("failed to initialize GORM: %w", err)
 	}
 
-	// Ensure the migrations path is a valid file URL
 	migrationsURL := cfg.MigrationsPath
-	// if !strings.HasPrefix(migrationsURL, "file://") {
-	// 	migrationsURL = "file://" + filepath.ToSlash(migrationsURL)
-	// }
-
 	if err := migrator.Migrate(ctx, sqlDB, migrationsURL, log); err != nil {
 		sqlDB.Close()
 		return nil, nil, fmt.Errorf("failed to apply migrations: %w", err)

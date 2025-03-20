@@ -2,10 +2,8 @@ package handlers
 
 import (
 	"context"
-	// "strconv"
 	"time"
 
-	// "github.com/gin-gonic/gin"
 	"github.com/victor-nach/git-monitor/internal/domain/models"
 	"go.uber.org/zap"
 )
